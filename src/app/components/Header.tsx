@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { FiMenu, FiX } from 'react-icons/fi'; // Import hamburger and close icons
 
 // Define a type for the cart item
 interface CartItem {
@@ -20,6 +21,8 @@ const Header = () => {
       return 0;
     }
   });
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const updateCartCount = () => {
@@ -47,7 +50,19 @@ const Header = () => {
         <Link href="/" className="text-2xl font-bold text-gray-800">
           FashionStore
         </Link>
-        <ul className="flex space-x-6">
+
+        {/* Hamburger Menu for Mobile */}
+        <div className="lg:hidden">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="text-gray-800 focus:outline-none"
+          >
+            {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          </button>
+        </div>
+
+        {/* Desktop Navigation */}
+        <ul className="hidden lg:flex space-x-6">
           <li>
             <Link href="/" className="text-gray-600 hover:text-gray-800 transition duration-200">
               Home
@@ -69,6 +84,8 @@ const Header = () => {
             </Link>
           </li>
         </ul>
+
+        {/* Cart and Account */}
         <div className="flex items-center space-x-6">
           <Link href="/cart" className="relative text-gray-600 hover:text-gray-800 transition duration-200">
             <svg
@@ -97,6 +114,34 @@ const Header = () => {
           </Link>
         </div>
       </nav>
+
+      {/* Mobile Navigation */}
+      {isMenuOpen && (
+        <div className="lg:hidden bg-white shadow-md mt-2">
+          <ul className="flex flex-col space-y-4 p-4">
+            <li>
+              <Link href="/" className="text-gray-600 hover:text-gray-800 transition duration-200">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/shop" className="text-gray-600 hover:text-gray-800 transition duration-200">
+                Shop
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" className="text-gray-600 hover:text-gray-800 transition duration-200">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="text-gray-600 hover:text-gray-800 transition duration-200">
+                Contact
+              </Link>
+            </li>
+          </ul>
+        </div>
+      )}
     </header>
   );
 };
